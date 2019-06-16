@@ -9,8 +9,11 @@ const app = express();
 const server = require('http').Server(app);
 const io = require('socket.io')(server);
 
+// key = 'mongodb+srv://<User>:<Password>@cluster0-eu4z1.mongodb.net/test?retryWrites=true&w=majority'
+const key = require('./mongodbkeys');
+
 mongoose.connect(
-  'mongodb+srv://<User>:<Password>@cluster0-eu4z1.mongodb.net/test?retryWrites=true&w=majority',
+  key.mongoURI,
   { useNewUrlParser: true },
 );
 

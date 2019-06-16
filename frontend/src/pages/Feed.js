@@ -38,7 +38,7 @@ class Feed extends Component {
     })
 
     socket.on('del', deletePost => {
-      this.setState({
+      this.setState({        
         feed: this.state.feed.filter(post =>
           post._id !== deletePost._id
           )
@@ -56,7 +56,7 @@ class Feed extends Component {
 
   handleSubmit = id => {
     confirmAlert({
-      title: 'Confirme',
+      title: '',
       message: 'Deseja excluir esse post?',
       buttons: [
         {
@@ -85,9 +85,9 @@ class Feed extends Component {
                 <img src={more} alt="Mais"/>
               </button>
               </header>
-
+        
               <img src={`http://localhost:3333/files/${post.image}`} alt=""/>
-
+              
               <footer>
               <div className="actions">
                 <button onClick={() => this.handleLike(post._id)}>
