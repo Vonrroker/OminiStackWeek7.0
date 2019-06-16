@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import './Feed.css';
 import api from '../services/api';
 import io from 'socket.io-client';
+import { confirmAlert } from 'react-confirm-alert'
 
 import more from '../assets/more.svg';
 import like from '../assets/like.svg';
@@ -35,10 +36,40 @@ class Feed extends Component {
           )
       });
     })
+
+    socket.on('del', deletePost => {
+      this.setState({
+        feed: this.state.feed.filter(post =>
+          post._id !== deletePost._id
+          )
+      });
+    })
+
   }
   handleLike = id => {
     api.post(`posts/${id}/like`);
   }
+
+  handleDelete = id => {
+    api.post(`posts/${id}/del`);
+  }
+
+  handleSubmit = id => {
+    confirmAlert({
+      title: 'Confirme',
+      message: 'Deseja excluir esse post?',
+      buttons: [
+        {
+          label: 'Sim',
+          onClick: () => this.handleDelete(id)
+        },
+        {
+          label: 'Não',
+          onClick: () => {}
+        }
+      ]
+    });
+  };
 
   render() {
     return (
@@ -50,12 +81,13 @@ class Feed extends Component {
                 <span>{post.author}</span>
                 <span className='place'>{post.place}</span>
               </div>
-        
-              <img src={more} alt="Mais"/>
+              <button onClick={() => this.handleSubmit(post._id)}>
+                <img src={more} alt="Mais"/>
+              </button>
               </header>
-        
+
               <img src={`http://localhost:3333/files/${post.image}`} alt=""/>
-              
+
               <footer>
               <div className="actions">
                 <button onClick={() => this.handleLike(post._id)}>
